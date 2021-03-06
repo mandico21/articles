@@ -4,7 +4,7 @@ from aiogram.utils import executor
 from app import utils, config
 from app.loader import dp
 
-# The configuration of the modules using import
+# Конфигурация модулей с помощью импорта
 from app import middlewares, filters, handlers
 
 
