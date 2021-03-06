@@ -11,6 +11,6 @@ async def notify_admins(admins: Union[List[int], List[str], int, str]):
     count = 0
     for admin in admins:
         with suppress(ChatNotFound):
-            await dp.bot.send_message(admin, "Bot started")
+            await dp.bot.send_message(admin, "Бот успешно запущен!")
             count += 1
-    logger.info(f"{count} admins received messages")
+    logger.info(f"{count} администраторы получили сообщения")

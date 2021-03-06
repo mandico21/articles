@@ -5,4 +5,4 @@ from app.loader import dp
 
 if __name__ == "app.middlewares":
     dp.middleware.setup(LoggingMiddleware())
-    logger.info('Middlewares are successfully configured')
+    logger.info('Middlewares успешно настроены')

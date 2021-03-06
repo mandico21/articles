@@ -1,5 +1,5 @@
 __author__ = """
-    Forzend Mainer
-    https://github.com/0Kit/
+    Mandico
+    https://github.com/mandico21/
 """
 __version__ = '1.0'
