@@ -1,40 +1,21 @@
-from logging import getLogger
-
-from sqlalchemy.exc import IntegrityError, DataError
-from sqlalchemy.orm import Session
-
-log = getLogger()
+from app.config import engine
 
 
-class DBSession(object):
+class DbMiddleware(BaseMiddleware):
+    Session = sessionmaker(bind=engine)
 
-    _session: Session
+    # Начало работы Мидл
+    async def pre_process(self, *args):
+        conn = engine.connect()
 
-    def __init__(self, session: Session, *args, **kwargs):
-        self._session = session
-
-    def query(self, *entities, **kwargs):
-        return self._session.query(*entities, **kwargs)
-
-    def commit_session(self, need_close: bool = False):
+    # Конец работы Мидл
+    async def post_process(self, *args):
+        session = Session(bind=conn)
         try:
-            self._session.commit()
-        except IntegrityError as e:
-            log.error(f'`{__name__}` {e}')
-            raise
-        except DataError as e:
-            log.error(f'`{__name__}` {e}')
-            raise
-
-        if need_close:
-            self.close_session()
-
-    def close_session(self):
-        try:
-            self._session.close()
-        except IntegrityError as e:
-            log.error(f'`{__name__}` {e}')
-            raise
-        except DataError as e:
-            log.error(f'`{__name__}` {e}')
-            raise
+            UserQuery.create_table(session, from_id, name, telegeram_user,
+                                   curtime)
+            session.commit()
+        except Exception:
+            session.rollback()
+        finally:
+            session.close()
