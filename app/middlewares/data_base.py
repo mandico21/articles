@@ -4,11 +4,11 @@ from app.config import engine
 class DbMiddleware(BaseMiddleware):
     Session = sessionmaker(bind=engine)
 
-    # Начало работы Мидл
+
     async def pre_process(self, *args):
         conn = engine.connect()
 
-    # Конец работы Мидл
+
     async def post_process(self, *args):
         session = Session(bind=conn)
         try:
