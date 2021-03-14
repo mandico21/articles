@@ -2,20 +2,16 @@ from app.config import engine
 
 
 class DbMiddleware(BaseMiddleware):
-    Session = sessionmaker(bind=engine)
 
-
-    async def pre_process(self, *args):
+    async def pre_process(self, obj, data, *args):
         conn = engine.connect()
+        data["conn"] = conn
 
-
-    async def post_process(self, *args):
-        session = Session(bind=conn)
+    async def post_process(self, obj, data, *args):
+        db = data.get("conn")
         try:
-            UserQuery.create_table(session, from_id, name, telegeram_user,
-                                   curtime)
-            session.commit()
+            db.commit()
         except Exception:
-            session.rollback()
+            db.rollback()
         finally:
-            session.close()
+            db.close()
